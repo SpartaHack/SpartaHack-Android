@@ -65,13 +65,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.nav_faq -> {
 
             }
-            R.id.nav_slideshow -> {
+            R.id.nav_schedule -> {
 
             }
-            R.id.nav_tools -> {
+            R.id.nav_pagex -> {
 
             }
             R.id.nav_share -> {
