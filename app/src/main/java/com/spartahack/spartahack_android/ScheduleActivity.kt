@@ -13,12 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ScheduleActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_schedule)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
-
         }
     }
 
@@ -66,25 +65,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                // do nothing. already here
-
+                // change activity to home
+                var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_maps -> {
-                // set activity to maps
-
+                // change activity to maps
                 var intent = Intent(this, MapsActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_faq -> {
-// set activity to faq
+// set activity to FAQ
                 var intent = Intent(this, FAQActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_schedule -> {
-                // set activity to schedule
-                var intent = Intent(this, ScheduleActivity::class.java)
-                startActivity(intent)
+                // do nothing. already here
             }
+
 
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

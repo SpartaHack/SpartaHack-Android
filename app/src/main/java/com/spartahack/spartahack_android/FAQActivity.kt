@@ -13,12 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_faq)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -66,8 +66,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                // do nothing. already here
-
+                // set activity to home
+                var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_maps -> {
                 // set activity to maps
@@ -76,9 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_faq -> {
-// set activity to faq
-                var intent = Intent(this, FAQActivity::class.java)
-                startActivity(intent)
+                // already here
             }
             R.id.nav_schedule -> {
                 // set activity to schedule
