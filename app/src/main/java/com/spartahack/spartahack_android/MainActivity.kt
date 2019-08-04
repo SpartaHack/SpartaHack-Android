@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_schedule -> {
 
             }
-            R.id.nav_pagex -> {
+            R.id.nav_chat -> {
 
             }
             R.id.nav_share -> {
