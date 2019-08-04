@@ -9,17 +9,18 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-                android:id="@+id/nav_faq"
+                android:id="@+id/nav_maps"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="@string/menu_faq"/>
+                android:title="@string/menu_maps"/>
+
         <item
                 android:id="@+id/nav_schedule"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="@string/menu_schedule"/>
         <item
-                android:id="@+id/nav_chat"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/menu_chat"/>
-    </group>
+                android:id="@+id/nav_faq"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/menu_faq"/>
+        </group>
 
 </menu>
