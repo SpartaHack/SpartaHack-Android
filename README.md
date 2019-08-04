@@ -7,3 +7,9 @@ Android app used at SpartaHack.
 * Implement the API to get user information
 * Create log in screen
 * other stuff I cant think of right now
+
+# Tabs Status
+* FAQ - lukas working on it
+* Main
+* Maps
+* Schedule - morgan working on it
