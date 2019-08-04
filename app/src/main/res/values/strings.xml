@@ -11,4 +11,6 @@
     <string name="menu_maps">Maps</string>
     <string name="menu_faq">FAQ</string>
     <string name="menu_schedule">Schedule</string>
+
+    <string name="faq_main_text_view">FAQ view</string>
 </resources>

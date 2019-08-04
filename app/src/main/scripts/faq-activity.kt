@@ -12,11 +12,21 @@ fun getQuestion(str: String): String {
 
 
 fun getAnswer(str: String): String {
-    /** Takes a string formatted as a JSON and extracts the string representing the question. */
+    /** Takes a string formatted as a JSON and extracts the string representing the answer. */
 
+    var answer_end = 0
+    // Finds the index where the answer ends.
+    for((i, c) in str.withIndex()){
+        if (str.substring(i, i+1) == "\","){
+            answer_end = i
+            break  // Breaks after the first ", is found, signaling the end of the answer.
+        }
+    }
+
+    // Finds the answer in the return from the API call.
     for((i, c) in str.withIndex()){
         if (str.substring(i, i+5) == "answer"){
-            return str.substring(i+10)
+            return str.substring(i+10, answer_end)
         }
     }
 } // getAnswer.
@@ -32,11 +42,16 @@ fun main(){
 
     var disp_str = ""
 
-    // Takes every entry in the FAQ list, then... (displays it or formats it in such a way that it is easy to display).
+    // Takes every entry in the FAQ list, then formats it in such a way that it is easy to display.
     for (i in faq_list) {
         var question = getQuestion(i)
         var answer = getAnswer(i)
 
-        disp_str += question + "\n" + answer
+        disp_str += (question + "\n" + answer + "\n")
     }
+
+    // Gets the TextView for the FAQ page and cahnges the text to the formatted FAQ string.
+    var faqTextView = findViewById(R.id.faqMainTextView) as TextView
+    faqTextView.text = disp_str
+
 } // main.
