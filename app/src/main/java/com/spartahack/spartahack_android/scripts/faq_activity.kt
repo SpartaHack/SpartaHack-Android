@@ -1,57 +1,64 @@
-package drawable
+package com.spartahack.spartahack_android.scripts
+
+import java.net.URL
 
 fun getQuestion(str: String): String {
     /** Takes a string formatted as a JSON and extracts the string representing the question. */
 
+    var returnStr = ""
+
     for((i, c) in str.withIndex()){
         if (str.substring(i, i+7) == "question"){
-            return str.substring(i+12)
+            returnStr =  str.substring(i+12)
         }
     }
+
+    return returnStr
 } // getQuestion.
 
 
 fun getAnswer(str: String): String {
     /** Takes a string formatted as a JSON and extracts the string representing the answer. */
 
-    var answer_end = 0
+    var answerEnd = 0
     // Finds the index where the answer ends.
     for((i, c) in str.withIndex()){
         if (str.substring(i, i+1) == "\","){
-            answer_end = i
+            answerEnd = i
             break  // Breaks after the first ", is found, signaling the end of the answer.
         }
     }
 
+    var returnStr = ""
     // Finds the answer in the return from the API call.
     for((i, c) in str.withIndex()){
         if (str.substring(i, i+5) == "answer"){
-            return str.substring(i+10, answer_end)
+            returnStr = str.substring(i+10, answerEnd)
         }
     }
+
+    return returnStr
 } // getAnswer.
 
 
-fun main(){
-    val api_ref = "api.elephant.spartahack.com/faqs"  // Holds a string for the api call.
+fun faqMain(): String{
+    /** The main structure of the script. Uses getQuestion and getAnswer. */
 
-    val faq_raw_str = URL(api_ref).readText()  // Makes a call to the api to get the FAQ information as a raw string.
+    val apiRef = "api.elephant.spartahack.com/faqs"  // Holds a string for the api call.
 
-    var faq_list = faq_raw_str.split("},")  // Splits the raw FAQ string into a list.
+    // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ string into a list.
+    val faqList = URL(apiRef).readText().split("},")
 
-
-    var disp_str = ""
+    var displayStr = ""
 
     // Takes every entry in the FAQ list, then formats it in such a way that it is easy to display.
-    for (i in faq_list) {
-        var question = getQuestion(i)
-        var answer = getAnswer(i)
+    for (i in faqList) {
+        val question = getQuestion(i)
+        val answer = getAnswer(i)
 
-        disp_str += (question + "\n" + answer + "\n")
+        displayStr += (question + "\n" + answer + "\n")
     }
 
-    // Gets the TextView for the FAQ page and cahnges the text to the formatted FAQ string.
-    var faqTextView = findViewById(R.id.faqMainTextView) as TextView
-    faqTextView.text = disp_str
+    return displayStr
 
-} // main.
+} // faqMain.

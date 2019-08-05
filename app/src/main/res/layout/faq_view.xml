@@ -14,9 +14,10 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:text="@string/faq_main_text_view"
+                    android:id="@+id/faqTextView"
+                    android:text="@string/faq_text_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/faqMainTextView"/>
+                    android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

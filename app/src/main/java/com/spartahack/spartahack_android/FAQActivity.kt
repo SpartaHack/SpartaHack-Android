@@ -12,6 +12,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import com.spartahack.spartahack_android.scripts.faqMain
+import kotlinx.android.synthetic.main.faq_view.*
+
 
 class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +38,10 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+        // Makes the API call and sends the data to the activity.
+        val displayString = faqMain()
+        faqTextView.text = displayString
     }
 
     override fun onBackPressed() {
