@@ -12,9 +12,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import com.spartahack.spartahack_android.scripts.faqMain
+import com.spartahack.spartahack_android.scripts.*
 import kotlinx.android.synthetic.main.faq_view.*
-
+import kotlinx.coroutines.*
 
 class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,9 +39,10 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
         navView.setNavigationItemSelectedListener(this)
 
-        // Makes the API call and sends the data to the activity.
-        val displayString = faqMain()
-        faqTextView.text = displayString
+        // Makes the API call and sends the data to the activity using a coroutine from Kotlin-coroutines-core.
+        val displayString = GlobalScope.async { faqMain() }
+
+        runBlocking { faqTextView.text = displayString.await() }
     }
 
     override fun onBackPressed() {
