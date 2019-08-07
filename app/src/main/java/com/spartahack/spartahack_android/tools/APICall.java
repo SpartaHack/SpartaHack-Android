@@ -5,7 +5,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
+/**
+ *
+ *  AUTHOR: Morgan Sandler
+ *  PURPOSE: Makes an API GET Request to api.elephant.spartahack.com/
+ *  SYNTAX: String result = new APICall(<your_path_here>).sendGet();
+ *  JAVA EXAMPLE: String test = new APICall("schedule").sendGet();
+ *  KOTLIN EXAMPLE: var test = APICall("schedule").sendGet()
+ * 
+ */
+
+
 public class APICall {
+
 
     private final String USER_AGENT = "Mozilla/5.0";
     private String path = "";
