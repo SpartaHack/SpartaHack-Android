@@ -30,7 +30,7 @@ public class APICall {
 
 
     // HTTP GET request
-    private String sendGet() throws Exception {
+    public String sendGet() throws Exception {
 
         String url = "http://api.elephant.spartahack.com/" + path;
 

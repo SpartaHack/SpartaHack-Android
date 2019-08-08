@@ -1,6 +1,6 @@
 package com.spartahack.spartahack_android.scripts
 
-import java.net.URL
+import com.spartahack.spartahack_android.tools.*
 import kotlinx.coroutines.*
 
 fun getQuestion(str: String): String {
@@ -45,10 +45,8 @@ fun getAnswer(str: String): String {
 suspend fun faqMain(): String = withContext(Dispatchers.Default){
     /** The main structure of the script. Uses getQuestion and getAnswer. */
 
-    val apiRef = "http://api.elephant.spartahack.com/faqs"  // Holds a string for the api call.
-
     // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ string into a list.
-    val faqRawStr = URL(apiRef).readText()
+    val faqRawStr = APICall("faqs").sendGet()
     val faqList = faqRawStr.split("},")
 
     var displayStr = ""
