@@ -1,5 +1,6 @@
 package com.spartahack.spartahack_android.scripts
 
+import android.util.Log
 import com.spartahack.spartahack_android.tools.*
 import kotlinx.coroutines.*
 
@@ -8,11 +9,16 @@ fun getQuestion(str: String): String {
 
     var returnStr = ""
 
-    for((i, c) in str.withIndex()){
-        if (str.substring(i, i+7) == "question"){
-            returnStr =  str.substring(i+12)
+    val splitStr = str.split("\",")
+
+    for(i in splitStr){
+        val header = i.split(":")
+        if (header[0] == "\"question\""){
+            returnStr =  header[1]
         }
     }
+
+    System.out.println(returnStr)
 
     return returnStr
 } // getQuestion.
@@ -21,22 +27,18 @@ fun getQuestion(str: String): String {
 fun getAnswer(str: String): String {
     /** Takes a string formatted as a JSON and extracts the string representing the answer. */
 
-    var answerEnd = 0
-    // Finds the index where the answer ends.
-    for((i, c) in str.withIndex()){
-        if (str.substring(i, i+1) == "\","){
-            answerEnd = i
-            break  // Breaks after the first ", is found, signaling the end of the answer.
+    var returnStr = ""
+
+    val splitStr = str.split("\",")
+
+    for(i in splitStr){
+        val header = i.split(":")
+        if (header[0] == "\"answer\""){
+            returnStr =  header[1]
         }
     }
 
-    var returnStr = ""
-    // Finds the answer in the return from the API call.
-    for((i, c) in str.withIndex()){
-        if (str.substring(i, i+5) == "answer"){
-            returnStr = str.substring(i+10, answerEnd)
-        }
-    }
+    System.out.println(returnStr)
 
     return returnStr
 } // getAnswer.
@@ -45,7 +47,8 @@ fun getAnswer(str: String): String {
 suspend fun faqMain(): String = withContext(Dispatchers.Default){
     /** The main structure of the script. Uses getQuestion and getAnswer. */
 
-    // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ string into a list.
+    // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ
+    // string into a list.
     val faqRawStr = APICall("faqs").sendGet()
     val faqList = faqRawStr.split("},")
 
@@ -59,6 +62,7 @@ suspend fun faqMain(): String = withContext(Dispatchers.Default){
         displayStr += (question + "\n" + answer + "\n")
     }
 
+    Log.d("FAQDisp",displayStr)
     return@withContext displayStr
 
 } // faqMain.
