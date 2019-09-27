@@ -2,7 +2,6 @@ package com.spartahack.spartahack_android.scripts
 
 import android.util.Log
 import com.spartahack.spartahack_android.tools.*
-import kotlinx.coroutines.*
 
 fun getQuestion(str: String): String {
     /** Takes a string formatted as a JSON and extracts the string representing the question. */
@@ -18,7 +17,7 @@ fun getQuestion(str: String): String {
         }
     }
 
-    System.out.println(returnStr)
+    Log.i("getQuestion", "question:" + returnStr)
 
     return returnStr
 } // getQuestion.
@@ -38,13 +37,13 @@ fun getAnswer(str: String): String {
         }
     }
 
-    System.out.println(returnStr)
+    Log.i("getAnswer", "answer:" + returnStr)
 
     return returnStr
 } // getAnswer.
 
 
-suspend fun faqMain(): String = withContext(Dispatchers.Default){
+fun faqMain(): String {
     /** The main structure of the script. Uses getQuestion and getAnswer. */
 
     // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ
@@ -52,7 +51,7 @@ suspend fun faqMain(): String = withContext(Dispatchers.Default){
     val faqRawStr = APICall("faqs").sendGet()
     val faqList = faqRawStr.split("},")
 
-    var displayStr = ""
+    var displayStr = faqRawStr
 
     // Takes every entry in the FAQ list, then formats it in such a way that it is easy to display.
     for (i in faqList) {
@@ -62,7 +61,7 @@ suspend fun faqMain(): String = withContext(Dispatchers.Default){
         displayStr += (question + "\n" + answer + "\n")
     }
 
-    Log.d("FAQDisp",displayStr)
-    return@withContext displayStr
+    Log.i("FAQMain","faqMain. Hopefully something happened.")
+    return displayStr
 
 } // faqMain.
