@@ -8,7 +8,7 @@ class FAQAsyncTask(val textView: TextView) : AsyncTask<Void, String, String>(){
 
     override fun doInBackground(vararg p0: Void?): String {
         Log.i("FAQAsync", "doInBackground")
-        val dispText = faqMain()
+        val dispText = ""//faqMain()
         publishProgress(dispText)
         return ""
     }

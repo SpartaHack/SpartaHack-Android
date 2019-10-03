@@ -1,6 +1,6 @@
 package com.spartahack.spartahack_android.scripts
 
-import android.util.Log
+import kotlinx.coroutines.*
 import com.spartahack.spartahack_android.tools.*
 
 fun getQuestion(str: String): String {
@@ -8,16 +8,14 @@ fun getQuestion(str: String): String {
 
     var returnStr = ""
 
-    val splitStr = str.split("\",")
+    val splitStr = str.split(",\"")
 
     for(i in splitStr){
-        val header = i.split(":")
-        if (header[0] == "\"question\""){
-            returnStr =  header[1]
+        val header = i.split("\":")
+        if (header[0] == "question"){
+            returnStr =  header[1].removeSuffix("\"").removePrefix("\"")
         }
     }
-
-    Log.i("getQuestion", "question:" + returnStr)
 
     return returnStr
 } // getQuestion.
@@ -28,40 +26,38 @@ fun getAnswer(str: String): String {
 
     var returnStr = ""
 
-    val splitStr = str.split("\",")
+    val splitStr = str.split("{\"")
 
     for(i in splitStr){
-        val header = i.split(":")
-        if (header[0] == "\"answer\""){
-            returnStr =  header[1]
+        val header = i.split("\":")
+        if (header[0] == "answer"){
+            returnStr =  header[1].removeSuffix("\",\"display").removePrefix("\"")
         }
     }
-
-    Log.i("getAnswer", "answer:" + returnStr)
 
     return returnStr
 } // getAnswer.
 
 
-fun faqMain(): String {
+suspend fun faqMain(): String = withContext(Dispatchers.Default){
     /** The main structure of the script. Uses getQuestion and getAnswer. */
 
     // Makes a call to the api to get the FAQ information as a raw string and splits the raw FAQ
     // string into a list.
-    val faqRawStr = APICall("faqs").sendGet()
+    var faqRawStr = APICall("faqs").sendGet()
+    faqRawStr = faqRawStr.removeRange(0, 1)
     val faqList = faqRawStr.split("},")
 
-    var displayStr = faqRawStr
+    var displayStr = ""
 
     // Takes every entry in the FAQ list, then formats it in such a way that it is easy to display.
     for (i in faqList) {
         val question = getQuestion(i)
         val answer = getAnswer(i)
 
-        displayStr += (question + "\n" + answer + "\n")
+        displayStr += ("<h2>" + question + "</h2>\n" + "<p>" + answer + "</p>\n")
     }
 
-    Log.i("FAQMain","faqMain. Hopefully something happened.")
-    return displayStr
+    return@withContext displayStr
 
 } // faqMain.

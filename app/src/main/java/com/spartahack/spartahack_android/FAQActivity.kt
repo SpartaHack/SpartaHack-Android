@@ -2,7 +2,6 @@ package com.spartahack.spartahack_android
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
@@ -13,8 +12,11 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import com.spartahack.spartahack_android.scripts.FAQAsyncTask
+import androidx.core.text.HtmlCompat
+import kotlinx.coroutines.*
 import kotlinx.android.synthetic.main.faq_view.*
+import com.spartahack.spartahack_android.scripts.faqMain
+
 
 class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,8 +42,9 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         navView.setNavigationItemSelectedListener(this)
 
         // Makes the API call and sends the data to the activity.
-        Log.i("FAQActivity", "Preparing to execute the API call.")
-        FAQAsyncTask(faqTextView).execute()
+        val displayString = GlobalScope.async { faqMain() }
+
+        runBlocking { faqTextView.text = HtmlCompat.fromHtml(displayString.await(), 0) }
     }
 
     override fun onBackPressed() {
