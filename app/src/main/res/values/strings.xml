@@ -13,4 +13,10 @@
     <string name="menu_schedule">Schedule</string>
 
     <string name="faq_text_view">FAQ view</string>
+
+    <string name="Login">Login</string>
+    <string name="signUp">Sign Up</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="or">or</string>
 </resources>

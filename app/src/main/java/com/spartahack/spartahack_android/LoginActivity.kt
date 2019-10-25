@@ -1,6 +1,7 @@
 package com.spartahack.spartahack_android
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -12,18 +13,19 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.os.CountDownTimer
-import com.spartahack.spartahack_android.tools.Timer
-import kotlinx.android.synthetic.main.app_bar_main.*
-import java.util.Calendar
-import java.lang.System.currentTimeMillis
+import android.view.View
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_login.view.*
+import com.spartahack.spartahack_android.tools.APICall
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class LoginActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -33,18 +35,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+    }
 
-        val END_DATE = 1580468400000 // Should be the date of the event
-        val currentDate = currentTimeMillis()
-        val endTimeMills = END_DATE - currentDate
-        val timer = Timer(endTimeMills, 1000, countdownTimer)
+    fun login(view:View){
+        /* This function is called when the "Login" button is pressed in the view. */
+        val username = view.username.text.toString()
+        val password = view.password.text.toString()
 
-        timer.start()
+        var text = ""
+        val duration = Toast.LENGTH_SHORT
+
+        if(username != "" && password != ""){
+            APICall("login")
+        }
+        else{
+            text = "Username and password are required."
+            val noInputToast = Toast.makeText(applicationContext, text, duration)
+            noInputToast.show()
+        }
+
+    }
+
+    fun signUp(view:View){
+        // DON'T FORGET TO SEND USER DIRECTLY TO THE REGISTRATION PAGE!!!!!!!
+        val signUpIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http;//www.19.spartahack.com"))
+        startActivity(signUpIntent)
     }
 
     override fun onBackPressed() {

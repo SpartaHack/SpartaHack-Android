@@ -75,7 +75,7 @@ class ScheduleActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 startActivity(intent)
             }
             R.id.nav_faq -> {
-// set activity to FAQ
+            // set activity to FAQ
                 var intent = Intent(this, FAQActivity::class.java)
                 startActivity(intent)
             }
