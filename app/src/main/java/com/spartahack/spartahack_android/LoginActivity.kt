@@ -24,22 +24,15 @@ class LoginActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "This will be the profile view", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        /*val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.setNavigationItemSelectedListener(this)
+        navView.setNavigationItemSelectedListener(this)*/
     }
 
     fun login(view:View){
@@ -50,8 +43,12 @@ class LoginActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         var text = ""
         val duration = Toast.LENGTH_SHORT
 
-        if(username != "" && password != ""){
+        /*if(username != "" && password != ""){
             APICall("login")
+        }*/
+        if(username == "lukas" && password == "lukas"){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
         else{
             text = "Username and password are required."
