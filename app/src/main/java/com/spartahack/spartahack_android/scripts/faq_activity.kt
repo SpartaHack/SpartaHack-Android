@@ -35,6 +35,11 @@ fun getAnswer(str: String): String {
         }
     }
 
+    // Takes out the test strings in the FAQ response.
+    if (returnStr == "What are exfdsact nufgddmbers?"){
+        returnStr = "skip"
+    }
+
     return returnStr
 } // getAnswer.
 
@@ -55,7 +60,11 @@ suspend fun faqMain(): String = withContext(Dispatchers.Default){
         val question = getQuestion(i)
         val answer = getAnswer(i)
 
-        displayStr += ("<h2>" + question + "</h2>\n" + "<p>" + answer + "</p>\n")
+        // Does not make an addition to the display string if the current answer is
+        // "What are exfdsact nufgddmbers?"
+        if (answer != "skip"){
+            displayStr += ("<h2>" + question + "</h2>\n" + "<p>" + answer + "</p>\n")
+        }
     }
 
     return@withContext displayStr

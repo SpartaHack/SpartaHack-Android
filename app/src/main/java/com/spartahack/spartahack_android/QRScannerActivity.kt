@@ -1,67 +1,37 @@
 package com.spartahack.spartahack_android
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.View
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_login.view.*
-import com.spartahack.spartahack_android.tools.APICall
+import androidx.appcompat.widget.Toolbar
+import com.spartahack.spartahack_android.tools.Timer
+import kotlinx.android.synthetic.main.app_bar_main.*
+import java.lang.System.currentTimeMillis
 
-class LoginActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_qr)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        /*val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.setNavigationItemSelectedListener(this)*/
-    }
+        navView.setNavigationItemSelectedListener(this)
 
-    fun login(view:View){
-        /* This function is called when the "Login" button is pressed in the view. */
-        val username = view.username.text.toString()
-        val password = view.password.text.toString()
-
-        var text = ""
-        val duration = Toast.LENGTH_SHORT
-
-        /*if(username != "" && password != ""){
-            APICall("login")
-        }*/
-        if(username == "lukas" && password == "lukas"){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-        else{
-            text = "Username and password are required."
-            val noInputToast = Toast.makeText(applicationContext, text, duration)
-            noInputToast.show()
-        }
-
-    }
-
-    fun signUp(view:View){
-        // DON'T FORGET TO SEND USER DIRECTLY TO THE REGISTRATION PAGE!!!!!!!
-        val signUpIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http;//www.19.spartahack.com"))
-        startActivity(signUpIntent)
     }
 
     override fun onBackPressed() {
