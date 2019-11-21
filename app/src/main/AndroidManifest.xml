@@ -3,6 +3,7 @@
     package="com.spartahack.spartahack_android" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -52,16 +53,6 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".LoginActivity"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.LOGIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
                 android:name=".ProfileActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar" >
@@ -69,6 +60,16 @@
                 <action android:name="android.intent.action.PROFILE" />
 
                 <category android:name="android.intent.category.PROFILE" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".QRScannerActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.QRSCANNER" />
+
+                <category android:name="android.intent.category.QRSCANNER" />
             </intent-filter>
         </activity>
         <service
