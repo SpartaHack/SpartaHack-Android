@@ -1,7 +1,9 @@
 package com.spartahack.spartahack_android
 
 import android.content.Intent
+import android.graphics.Matrix
 import android.os.Bundle
+import android.util.Size
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -9,10 +11,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
+import android.view.Surface
+import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import com.spartahack.spartahack_android.tools.Timer
-import kotlinx.android.synthetic.main.app_bar_main.*
-import java.lang.System.currentTimeMillis
+import androidx.camera.core.CameraX
+import androidx.camera.core.Preview
+import androidx.camera.core.PreviewConfig
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
+import kotlinx.android.synthetic.main.qr_view.*
+
 
 class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,12 +34,18 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
 
+        val options = FirebaseVisionBarcodeDetectorOptions.Builder()
+            .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
+            .build()
+
+        val viewFinder = view_finder
     }
 
     override fun onBackPressed() {

@@ -1,6 +1,9 @@
 package com.spartahack.spartahack_android
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -32,7 +35,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-        val END_DATE = 1580468400000 // Should be the date of the event
+        // Create the events notification channel.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val CHANNEL_ID = getString(R.string.events_id)
+            val name = getString(R.string.events_name)
+            val descriptionText = getString(R.string.events_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val eventsChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            eventsChannel.description = descriptionText
+            // Register the channel with the system.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(eventsChannel)
+        }
+
+        val END_DATE = 1580468400000 // Should be the date of the event in milliseconds
         val currentDate = currentTimeMillis()
         val endTimeMills = END_DATE - currentDate
         val timer = Timer(endTimeMills, 1000, countdownTimer)

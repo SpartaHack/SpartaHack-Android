@@ -13,7 +13,7 @@ import android.view.Menu
 import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
 import kotlinx.android.synthetic.main.faq_view.*
-import com.spartahack.spartahack_android.scripts.faqMain
+import com.spartahack.spartahack_android.scripts.faqMainSuspend
 
 
 class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +35,7 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         navView.setNavigationItemSelectedListener(this)
 
         // Makes the API call and sends the data to the activity.
-        val displayString = GlobalScope.async { faqMain() }
+        val displayString = GlobalScope.async { faqMainSuspend() }
 
         runBlocking { faqTextView.text = HtmlCompat.fromHtml(displayString.await(), 0) }
     }
