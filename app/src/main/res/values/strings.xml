@@ -18,4 +18,10 @@
     <string name="events_name">Events</string>
     <string name="events_description">Used for alerting the user for meals, tech talks, etc.</string>
     <string name="capture">Capture</string>
+
+    <string name="home_icon_title">Home</string>
+    <string name="map_icon_title">Map</string>
+    <string name="faq_icon_title">FAQ</string>
+    <string name="qr_icon_title">QR</string>
+    <string name="profile_icon_title">Profile</string>
 </resources>
