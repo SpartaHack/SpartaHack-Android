@@ -19,4 +19,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="or">or</string>
+
+    <string name="com_auth0_client_id">5fHs0oCQswUEfYQAwyTrF6lpQJa5bbcA</string>
+    <string name="com_auth0_domain">spartahack-dev.auth0.com</string>
 </resources>
