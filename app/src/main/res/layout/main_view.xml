@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android:LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        layout_height="match_parent"
+        layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar" />
+    <fragment
+            android:id="@+id/nav_host_fragment" />
+    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            app:menu="@menu/menu_bottom_nav" />
+</android:LinearLayout>

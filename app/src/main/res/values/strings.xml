@@ -17,4 +17,5 @@
     <string name="events_id">EVENT_ID</string>
     <string name="events_name">Events</string>
     <string name="events_description">Used for alerting the user for meals, tech talks, etc.</string>
+    <string name="capture">Capture</string>
 </resources>

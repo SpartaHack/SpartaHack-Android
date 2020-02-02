@@ -51,7 +51,7 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_qr)
+        setContentView(R.layout.qr_view)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -177,6 +177,7 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 // QR code should only ever be a TYPE_TEXT.
                 if (barcode.valueType == FirebaseVisionBarcode.TYPE_TEXT){
                     returnValue = barcode.rawValue
+                    Toast.makeText(context, "QR Value: " + returnValue, Toast.LENGTH_SHORT).show()
 
                 }else{
                     Log.d("FirebaseVision", "Barcode returned non-text type.")
