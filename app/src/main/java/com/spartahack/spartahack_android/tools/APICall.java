@@ -1,5 +1,7 @@
 package com.spartahack.spartahack_android.tools;
 
+import com.spartahack.spartahack_android.Secrets;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -32,7 +34,7 @@ public class APICall {
     // HTTP GET request
     public String sendGet() throws Exception {
 
-        String url = "http://api.elephant.spartahack.com/" + path;
+        String url = Secrets.getSPARTAHACK_API_URL() + path;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
