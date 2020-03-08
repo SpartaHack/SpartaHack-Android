@@ -18,32 +18,11 @@ class ScheduleActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_schedule)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "This will be the profile view", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        navView.setNavigationItemSelectedListener(this)
+        setContentView(R.layout.schedule_view)
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+        super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -69,24 +48,13 @@ class ScheduleActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_maps -> {
-                // change activity to maps
-                var intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            }
             R.id.nav_faq -> {
-            // set activity to FAQ
+                // set activity to FAQ
                 var intent = Intent(this, FAQActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_schedule -> {
-                // do nothing. already here
-            }
-
-
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
+
         return true
     }
 }

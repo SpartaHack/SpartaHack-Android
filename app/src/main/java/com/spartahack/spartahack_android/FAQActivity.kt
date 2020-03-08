@@ -13,7 +13,7 @@ import android.view.Menu
 import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
 import kotlinx.android.synthetic.main.faq_view.*
-import com.spartahack.spartahack_android.scripts.faqMain
+import com.spartahack.spartahack_android.scripts.faqMainSuspend
 
 
 class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,33 +21,16 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_faq)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        navView.setNavigationItemSelectedListener(this)
+        setContentView(R.layout.faq_view)
 
         // Makes the API call and sends the data to the activity.
-        val displayString = GlobalScope.async { faqMain() }
+        val displayString = GlobalScope.async { faqMainSuspend() }
 
         runBlocking { faqTextView.text = HtmlCompat.fromHtml(displayString.await(), 0) }
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-
-        }
+        super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,24 +56,11 @@ class FAQActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_maps -> {
-                // set activity to maps
-
-                var intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            }
             R.id.nav_faq -> {
                 // already here
             }
-            R.id.nav_schedule -> {
-                // set activity to schedule
-                var intent = Intent(this, ScheduleActivity::class.java)
-                startActivity(intent)
-            }
-
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
+
         return true
     }
 }

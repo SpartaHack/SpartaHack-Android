@@ -1,97 +1,113 @@
 package com.spartahack.spartahack_android
 
-import android.content.Intent
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import androidx.appcompat.widget.Toolbar
-import com.spartahack.spartahack_android.tools.Timer
-import kotlinx.android.synthetic.main.app_bar_main.*
-import java.lang.System.currentTimeMillis
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.main_view.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+/*
+ * Just about all of this code is copied from the link below. It handles the fragments and the view
+ * pager.
+ * https://pspdfkit.com/blog/2019/using-the-bottom-navigation-view-in-android/
+ */
 
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    private lateinit var viewPager: ViewPager
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var mainPagerAdapter: MainPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setContentView(R.layout.main_view)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        // Create the events notification channel.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val CHANNEL_ID = getString(R.string.events_id)
+            val name = getString(R.string.events_name)
+            val descriptionText = getString(R.string.events_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val eventsChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            eventsChannel.description = descriptionText
+            // Register the channel with the system.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(eventsChannel)
+        }
 
-        navView.setNavigationItemSelectedListener(this)
+        // Initialize toolbar
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        val END_DATE = 1580468400000 // Should be the date of the event
-        val currentDate = currentTimeMillis()
-        val endTimeMills = END_DATE - currentDate
-        val timer = Timer(endTimeMills, 1000, countdownTimer)
+        // Initialize fragment container, bottom navigation menu, and the pager.
+        viewPager = fragment_container
+        bottomNav = bottom_nav
+        mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
-        timer.start()
+        // Set items to be displayed.
+        mainPagerAdapter.setItems(
+            arrayListOf(
+                MainScreen.HOME,
+                MainScreen.MAPS,
+                MainScreen.FAQ,
+                MainScreen.QR,
+                MainScreen.PROFILE
+            )
+        )
+
+        // Show the default screen.
+        val defaultScreen = MainScreen.HOME
+        scrollToScreen(defaultScreen)
+        selectBottomNavigationViewMenuItem(defaultScreen.menuItemId)
+        supportActionBar?.setTitle(defaultScreen.titleStringId)
+
+        // Set the listener for item selection in the bottom navigation view.
+        bottomNav.setOnNavigationItemSelectedListener(this)
+
+        // Attach an adapter to the view pager and make it select the bottom navigation
+        // menu item and change the title to proper values when selected.
+        viewPager.adapter = mainPagerAdapter
+        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                val selectedScreen = mainPagerAdapter.getItems()[position]
+                selectBottomNavigationViewMenuItem(selectedScreen.menuItemId)
+                supportActionBar?.setTitle(selectedScreen.titleStringId)
+            }
+        })
     }
 
-    override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-
+    /**
+     * Scrolls `ViewPager` to show the provided screen.
+     */
+    private fun scrollToScreen(mainScreen: MainScreen) {
+        val screenPosition = mainPagerAdapter.getItems().indexOf(mainScreen)
+        if (screenPosition != viewPager.currentItem) {
+            viewPager.currentItem = screenPosition
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    /**
+     * Selects the specified item in the bottom navigation view.
+     */
+    private fun selectBottomNavigationViewMenuItem(@IdRes menuItemId: Int) {
+        bottomNav.setOnNavigationItemSelectedListener(null)
+        bottomNav.selectedItemId = menuItemId
+        bottomNav.setOnNavigationItemSelectedListener(this)
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_home -> {
-                // do nothing. already here
-
-            }
-            R.id.nav_maps -> {
-                // set activity to maps
-
-                var intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.nav_faq -> {
-                // set activity to faq
-                var intent = Intent(this, FAQActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.nav_schedule -> {
-                // set activity to schedule
-                var intent = Intent(this, ScheduleActivity::class.java)
-                startActivity(intent)
-            }
-
+    /**
+     * Listener implementation for registering bottom navigation clicks.
+     */
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        getMainScreenForMenuItem(menuItem.itemId)?.let {
+            scrollToScreen(it)
+            supportActionBar?.setTitle(it.titleStringId)
+            return true
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        return false
     }
 }
