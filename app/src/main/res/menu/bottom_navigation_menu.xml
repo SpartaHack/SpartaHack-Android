@@ -2,27 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/home_icon_title"/>
+            android:id="@+id/nav_home"
+            android:enabled="true"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/home_icon_title"/>
 
     <item
             android:id="@+id/nav_maps"
+            android:enabled="true"
             android:icon="@drawable/ic_map_black_24dp"
             android:title="@string/map_icon_title"/>
 
     <item
             android:id="@+id/nav_faq"
+            android:enabled="true"
             android:icon="@drawable/ic_forum_black_24dp"
             android:title="@string/faq_icon_title"/>
 
     <item
             android:id="@+id/nav_qr"
+            android:enabled="true"
             android:icon="@drawable/ic_camera_alt_black_24dp"
             android:title="@string/qr_icon_title"/>
 
     <item
             android:id="@+id/nav_profile"
+            android:enabled="true"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/profile_icon_title"/>
 

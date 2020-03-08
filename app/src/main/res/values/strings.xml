@@ -1,35 +1,27 @@
 <resources>
     <string name="app_name">SpartaHack-Android</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">\@(Username/handle from api)</string>
-    <string name="nav_header_subtitle">(Email Address from api)</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Action settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_maps">Maps</string>
-    <string name="menu_faq">FAQ</string>
-    <string name="menu_schedule">Schedule</string>
+    // Home fragment
+    <string name="timer_display_days">Days</string>
+    <string name="timer_display_hours">Hours</string>
+    <string name="timer_display_minutes">Minutes</string>
+    <string name="timer_display_seconds">Seconds</string>
+    <string name="timer_default">00:00:00:00</string>
 
-    <string name="faq_text_view">FAQ view</string>
 
+    // Notifications
     <string name="events_id">EVENT_ID</string>
     <string name="events_name">Events</string>
     <string name="events_description">Used for alerting the user for meals, tech talks, etc.</string>
     <string name="capture">Capture</string>
 
+    // Bottom navigation
     <string name="home_icon_title">Home</string>
     <string name="map_icon_title">Map</string>
     <string name="faq_icon_title">FAQ</string>
     <string name="qr_icon_title">QR</string>
     <string name="profile_icon_title">Profile</string>
-
-    <string name="Login">Login</string>
-    <string name="signUp">Sign Up</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="or">or</string>
 
     // Auth0
     <string name="com_auth0_client_id">5fHs0oCQswUEfYQAwyTrF6lpQJa5bbcA</string>

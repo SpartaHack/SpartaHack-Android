@@ -5,17 +5,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Bundle
-import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
@@ -52,19 +47,6 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.qr_view)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        navView.setNavigationItemSelectedListener(this)
-
 
         // Initializes the camera and preview.
         initCamera()
@@ -213,13 +195,7 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-
-        }
+        super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -244,26 +220,12 @@ class QRScannerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 // do nothing. already here
 
             }
-            R.id.nav_maps -> {
-                // set activity to maps
-
-                var intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            }
             R.id.nav_faq -> {
                 // set activity to faq
                 var intent = Intent(this, FAQActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_schedule -> {
-                // set activity to schedule
-                var intent = Intent(this, ScheduleActivity::class.java)
-                startActivity(intent)
-            }
-
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 }

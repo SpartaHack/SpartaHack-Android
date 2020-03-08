@@ -2,26 +2,30 @@ package com.spartahack.spartahack_android
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import com.google.android.material.navigation.NavigationView
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import androidx.appcompat.widget.Toolbar
-import com.spartahack.spartahack_android.tools.Timer
-import kotlinx.android.synthetic.main.app_bar_main.*
-import java.lang.System.currentTimeMillis
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.main_view.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+/*
+ * Just about all of this code is copied from the link below. It handles the fragments and the view
+ * pager.
+ * https://pspdfkit.com/blog/2019/using-the-bottom-navigation-view-in-android/
+ */
 
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    private lateinit var viewPager: ViewPager
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var mainPagerAdapter: MainPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_view)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
 
         // Create the events notification channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -36,58 +40,74 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             notificationManager.createNotificationChannel(eventsChannel)
         }
 
-        val END_DATE = 1580468400000 // Should be the date of the event in milliseconds
-        val currentDate = currentTimeMillis()
-        val endTimeMills = END_DATE - currentDate
-        val timer = Timer(endTimeMills, 1000, countdownTimer)
+        // Initialize toolbar
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        timer.start()
+        // Initialize fragment container, bottom navigation menu, and the pager.
+        viewPager = fragment_container
+        bottomNav = bottom_nav
+        mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
+
+        // Set items to be displayed.
+        mainPagerAdapter.setItems(
+            arrayListOf(
+                MainScreen.HOME,
+                MainScreen.MAPS,
+                MainScreen.FAQ,
+                MainScreen.QR,
+                MainScreen.PROFILE
+            )
+        )
+
+        // Show the default screen.
+        val defaultScreen = MainScreen.HOME
+        scrollToScreen(defaultScreen)
+        selectBottomNavigationViewMenuItem(defaultScreen.menuItemId)
+        supportActionBar?.setTitle(defaultScreen.titleStringId)
+
+        // Set the listener for item selection in the bottom navigation view.
+        bottomNav.setOnNavigationItemSelectedListener(this)
+
+        // Attach an adapter to the view pager and make it select the bottom navigation
+        // menu item and change the title to proper values when selected.
+        viewPager.adapter = mainPagerAdapter
+        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                val selectedScreen = mainPagerAdapter.getItems()[position]
+                selectBottomNavigationViewMenuItem(selectedScreen.menuItemId)
+                supportActionBar?.setTitle(selectedScreen.titleStringId)
+            }
+        })
     }
 
-    override fun onBackPressed() {
-            super.onBackPressed()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    /**
+     * Scrolls `ViewPager` to show the provided screen.
+     */
+    private fun scrollToScreen(mainScreen: MainScreen) {
+        val screenPosition = mainPagerAdapter.getItems().indexOf(mainScreen)
+        if (screenPosition != viewPager.currentItem) {
+            viewPager.currentItem = screenPosition
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_home -> {
-                // do nothing. already here
+    /**
+     * Selects the specified item in the bottom navigation view.
+     */
+    private fun selectBottomNavigationViewMenuItem(@IdRes menuItemId: Int) {
+        bottomNav.setOnNavigationItemSelectedListener(null)
+        bottomNav.selectedItemId = menuItemId
+        bottomNav.setOnNavigationItemSelectedListener(this)
+    }
 
-            }
-            R.id.nav_maps -> {
-                // set activity to maps
-
-                var intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.nav_faq -> {
-                // set activity to faq
-                var intent = Intent(this, FAQActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.nav_schedule -> {
-                // set activity to schedule
-                var intent = Intent(this, ScheduleActivity::class.java)
-                startActivity(intent)
-            }
-
+    /**
+     * Listener implementation for registering bottom navigation clicks.
+     */
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        getMainScreenForMenuItem(menuItem.itemId)?.let {
+            scrollToScreen(it)
+            supportActionBar?.setTitle(it.titleStringId)
+            return true
         }
-        return true
+        return false
     }
 }
